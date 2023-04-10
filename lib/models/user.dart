@@ -17,13 +17,15 @@ class User{
    required this.isAdmin
 });
 
-  factory User.empty(){
+
+
+  factory User.fromJson(Map<String, dynamic> json){
    return User(
-       token: '',
-       id: '',
-       email: '',
-       fullname: '',
-       isAdmin: false
+       token: json['token'],
+       id: json['id'],
+       email: json['email'],
+       fullname: json['fullname'],
+       isAdmin: json['isAdmin']
    );
   }
 

@@ -8,7 +8,7 @@ class AuthState{
     final bool isError;
     final  bool isSuccess;
     final String errText;
-    final User user;
+    final User? user;
 
 
     AuthState({
@@ -19,6 +19,25 @@ class AuthState{
       required this.isError
 });
 
+
+    AuthState copyWith(
+    {
+      bool? isLoad,
+      bool? isError,
+       bool? isSuccess,
+      String? errText,
+      User? user,
+
+    }
+        ){
+      return AuthState(
+          user: user ?? this.user,
+          isLoad: isLoad ?? this.isLoad,
+          errText: errText ?? this.errText,
+          isSuccess: isSuccess ?? this.isSuccess,
+          isError: isError ?? this.isError
+      );
+    }
 
 
 }

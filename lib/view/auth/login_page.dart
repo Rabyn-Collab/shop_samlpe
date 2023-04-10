@@ -11,15 +11,21 @@ import '../../providers/auth_provider.dart';
 
 
 
-class AuthPage extends ConsumerWidget {
-
-  final mailController = TextEditingController();
-  final passController = TextEditingController();
-  final _form = GlobalKey<FormState>();
-
+class LoginPage extends ConsumerStatefulWidget {
 
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends ConsumerState<LoginPage> {
+  final mailController = TextEditingController();
+
+  final passController = TextEditingController();
+
+  final _form = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
 
     ref.listen(authProvider, (previous, next) {
       if(next.isError){
@@ -42,7 +48,6 @@ class AuthPage extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             child: ListView(
               children: [
-
                 Text('Login Form'),
                 gapH32,
                 TextFormField(
@@ -99,13 +104,10 @@ class AuthPage extends ConsumerWidget {
                       FocusScope.of(context).unfocus();
                       _form.currentState!.save();
                       if(_form.currentState!.validate()){
-
-
                           ref.read(authProvider.notifier).userLogin(
                               email: mailController.text.trim(),
                               password: passController.text.trim()
                           );
-
                       }else{
                         ref.read(mode.notifier).change();
                       }
