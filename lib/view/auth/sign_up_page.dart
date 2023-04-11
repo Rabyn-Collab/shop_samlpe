@@ -3,12 +3,13 @@ import 'package:fireapp/commons_widgets/snack_shows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import '../../constants/sizes.dart';
 import '../../providers/auth_provider.dart';
 
 
 
-class AuthPage extends ConsumerWidget {
+class SignUpPage extends ConsumerWidget {
 
   final nameController = TextEditingController();
   final mailController = TextEditingController();
@@ -23,6 +24,7 @@ class AuthPage extends ConsumerWidget {
       if(next.isError){
         SnackShow.showError(next.errText);
       }else if (next.isSuccess){
+        Get.back();
         SnackShow.showSuccess('success');
       }
     });
@@ -46,7 +48,7 @@ class AuthPage extends ConsumerWidget {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   inputFormatters: [
-                    LengthLimitingTextInputFormatter(10)
+                    LengthLimitingTextInputFormatter(50)
                   ],
                   decoration: InputDecoration(
                       hintText: 'Full nmae'
@@ -119,12 +121,12 @@ class AuthPage extends ConsumerWidget {
                       if(_form.currentState!.validate()){
 
 
-                            // ref.read(authProvider.notifier).userSignUp(
-                            //     email: mailController.text.trim(),
-                            //     password: passController.text.trim(),
-                            //     userName: userNameController.text.trim(),
-                            //
-                            // );
+                            ref.read(authProvider.notifier).userSignUp(
+                                email: mailController.text.trim(),
+                                password: passController.text.trim(),
+                               fullname: nameController.text.trim(),
+
+                            );
 
 
 
@@ -134,7 +136,15 @@ class AuthPage extends ConsumerWidget {
 
                     },
                     child:auth.isLoad ? CircularProgressIndicator(): Text('Submit')),
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Already have an Account'),
+                    TextButton(onPressed: (){
+                      Get.back();
+                    }, child: Text('Login'))
+                  ],
+                )
 
 
               ],

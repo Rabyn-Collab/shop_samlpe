@@ -20,6 +20,7 @@ mixin _$CommonState {
   bool get isError => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
   String get errText => throw _privateConstructorUsedError;
+  List<Product> get products => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CommonStateCopyWith<CommonState> get copyWith =>
@@ -32,7 +33,12 @@ abstract class $CommonStateCopyWith<$Res> {
           CommonState value, $Res Function(CommonState) then) =
       _$CommonStateCopyWithImpl<$Res, CommonState>;
   @useResult
-  $Res call({bool isLoad, bool isError, bool isSuccess, String errText});
+  $Res call(
+      {bool isLoad,
+      bool isError,
+      bool isSuccess,
+      String errText,
+      List<Product> products});
 }
 
 /// @nodoc
@@ -52,6 +58,7 @@ class _$CommonStateCopyWithImpl<$Res, $Val extends CommonState>
     Object? isError = null,
     Object? isSuccess = null,
     Object? errText = null,
+    Object? products = null,
   }) {
     return _then(_value.copyWith(
       isLoad: null == isLoad
@@ -70,6 +77,10 @@ class _$CommonStateCopyWithImpl<$Res, $Val extends CommonState>
           ? _value.errText
           : errText // ignore: cast_nullable_to_non_nullable
               as String,
+      products: null == products
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
     ) as $Val);
   }
 }
@@ -82,7 +93,12 @@ abstract class _$$_CommonStateCopyWith<$Res>
       __$$_CommonStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoad, bool isError, bool isSuccess, String errText});
+  $Res call(
+      {bool isLoad,
+      bool isError,
+      bool isSuccess,
+      String errText,
+      List<Product> products});
 }
 
 /// @nodoc
@@ -100,6 +116,7 @@ class __$$_CommonStateCopyWithImpl<$Res>
     Object? isError = null,
     Object? isSuccess = null,
     Object? errText = null,
+    Object? products = null,
   }) {
     return _then(_$_CommonState(
       isLoad: null == isLoad
@@ -118,6 +135,10 @@ class __$$_CommonStateCopyWithImpl<$Res>
           ? _value.errText
           : errText // ignore: cast_nullable_to_non_nullable
               as String,
+      products: null == products
+          ? _value._products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
     ));
   }
 }
@@ -129,7 +150,9 @@ class _$_CommonState implements _CommonState {
       {required this.isLoad,
       required this.isError,
       required this.isSuccess,
-      required this.errText});
+      required this.errText,
+      required final List<Product> products})
+      : _products = products;
 
   @override
   final bool isLoad;
@@ -139,10 +162,17 @@ class _$_CommonState implements _CommonState {
   final bool isSuccess;
   @override
   final String errText;
+  final List<Product> _products;
+  @override
+  List<Product> get products {
+    if (_products is EqualUnmodifiableListView) return _products;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_products);
+  }
 
   @override
   String toString() {
-    return 'CommonState(isLoad: $isLoad, isError: $isError, isSuccess: $isSuccess, errText: $errText)';
+    return 'CommonState(isLoad: $isLoad, isError: $isError, isSuccess: $isSuccess, errText: $errText, products: $products)';
   }
 
   @override
@@ -154,12 +184,13 @@ class _$_CommonState implements _CommonState {
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.isSuccess, isSuccess) ||
                 other.isSuccess == isSuccess) &&
-            (identical(other.errText, errText) || other.errText == errText));
+            (identical(other.errText, errText) || other.errText == errText) &&
+            const DeepCollectionEquality().equals(other._products, _products));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoad, isError, isSuccess, errText);
+  int get hashCode => Object.hash(runtimeType, isLoad, isError, isSuccess,
+      errText, const DeepCollectionEquality().hash(_products));
 
   @JsonKey(ignore: true)
   @override
@@ -173,7 +204,8 @@ abstract class _CommonState implements CommonState {
       {required final bool isLoad,
       required final bool isError,
       required final bool isSuccess,
-      required final String errText}) = _$_CommonState;
+      required final String errText,
+      required final List<Product> products}) = _$_CommonState;
 
   @override
   bool get isLoad;
@@ -183,6 +215,8 @@ abstract class _CommonState implements CommonState {
   bool get isSuccess;
   @override
   String get errText;
+  @override
+  List<Product> get products;
   @override
   @JsonKey(ignore: true)
   _$$_CommonStateCopyWith<_$_CommonState> get copyWith =>

@@ -1,3 +1,4 @@
+import 'package:fireapp/models/product.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'common_state.freezed.dart';
 
@@ -9,12 +10,13 @@ const factory CommonState ({
   required bool isLoad,
   required bool isError,
   required bool isSuccess,
-  required String errText
+  required String errText,
+  required List<Product> products
 }) = _CommonState;
 
 
 factory CommonState.empty(){
-  return CommonState(isLoad: false, isError: false, isSuccess: false, errText: '');
+  return CommonState(isLoad: false, isError: false, isSuccess: false, errText: '',products: []);
 }
 
 }

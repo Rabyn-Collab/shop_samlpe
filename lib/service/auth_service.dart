@@ -31,7 +31,7 @@ final dio = Dio();
       return Right(User.fromJson(response.data['data']));
 
     }on DioError catch (err){
-       print(err);
+       print(err.response);
       return Left(err.toString());
     }on HiveError catch (err){
        return Left(err.toString());

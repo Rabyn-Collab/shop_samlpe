@@ -1,8 +1,10 @@
 import 'package:fireapp/common_provider/other_provider.dart';
 import 'package:fireapp/commons_widgets/snack_shows.dart';
+import 'package:fireapp/view/auth/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import '../../constants/sizes.dart';
 import '../../providers/auth_provider.dart';
 
@@ -114,6 +116,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                     },
                     child:auth.isLoad ? CircularProgressIndicator(): Text('Submit')),
+
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Don\'t have an Account'),
+                    TextButton(onPressed: (){
+                      Get.to(() =>SignUpPage());
+                    }, child: Text('Sign Up'))
+                  ],
+                )
 
               ],
             ),
