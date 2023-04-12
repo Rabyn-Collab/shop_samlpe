@@ -26,6 +26,7 @@ class Product {
   final String brand;
   final String category;
   final int countInStock;
+  final String id;
 
   Product({
     required this.rating,
@@ -37,7 +38,8 @@ class Product {
     required this.product_detail,
     required this.product_image,
     required this.product_price,
-    required this.reviews
+    required this.reviews,
+    required this.id
 });
 
 
@@ -52,7 +54,8 @@ class Product {
         product_detail: json['product_detail'],
         product_image: '${Api.baseUrl}${json['product_image']}',
         product_price: json['product_price'],
-        reviews: (json['reviews'] as List).map((e) => Review.fromJson(e)).toList()
+        reviews: (json['reviews'] as List).map((e) => Review.fromJson(e)).toList(),
+      id: json['_id']
     );
   }
 

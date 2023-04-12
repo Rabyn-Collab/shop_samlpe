@@ -12,20 +12,21 @@ class CartItem extends HiveObject{
   int product_price;
 
   @HiveField(2)
-  String quantity;
+  int quantity;
 
   @HiveField(3)
   String product_image;
 
   @HiveField(4)
-  int total;
+  String product_id;
+
 
   CartItem({
     required this.product_price,
     required this.product_name,
     required this.product_image,
-    required this.total,
-    required this.quantity
-})
+    required this.quantity,
+    required this.product_id
+});
 
 }

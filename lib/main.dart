@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'models/cart_item.dart';
 import 'models/user.dart';
 
 
 
 
 final boxA = Provider<User?>((ref) => null);
+final boxB = Provider<List<CartItem>>((ref) => []);
 void main() async {
 
 WidgetsFlutterBinding.ensureInitialized();
@@ -22,12 +23,15 @@ WidgetsFlutterBinding.ensureInitialized();
   );
 
   await Hive.initFlutter();
+  Hive.registerAdapter(CartItemAdapter());
   final box = await Hive.openBox<String?>('user');
+  final cartBox = await Hive.openBox<CartItem>('carts');
 final bx = Hive.box<String?>('user');
   final getBox = bx.get('user');
   runApp(ProviderScope(
     overrides: [
-      boxA.overrideWithValue(getBox == null ? null:  User.fromJson(jsonDecode(getBox)))
+      boxA.overrideWithValue(getBox == null ? null:  User.fromJson(jsonDecode(getBox))),
+      boxB.overrideWithValue(cartBox.values.toList())
     ],
       child: const Home()
   )
