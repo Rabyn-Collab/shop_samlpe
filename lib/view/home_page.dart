@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 import '../providers/auth_provider.dart';
 import '../providers/crud_provider.dart';
+import 'cart_page.dart';
+import 'detail_page.dart';
 
 
 
@@ -14,18 +17,39 @@ class HomePage extends StatelessWidget {
     return Consumer(
       builder: (context, ref, child) {
         final productData = ref.watch(crudProvider);
+        final user = ref.watch(authProvider);
+        print(user.user);
         return Scaffold(
             appBar: AppBar(
           title: Text('Sample Shop'),
               actions: [
-                IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart))
+                IconButton(onPressed: (){
+                  Get.to(() => CartPage());
+                }, icon: Icon(Icons.shopping_cart))
               ],
             ),
             drawer: Drawer(
               child: ListView(
                 children: [
+                  DrawerHeader(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.user!.fullname),
+                      Text(user.user!.email)
+                    ],
+                  )),
+                  if(user.user!.isAdmin) ListTile(
+                    onTap: (){
+
+                    },
+                    leading: Icon(Icons.settings),
+                    title: Text('Crud'),
+                  ),
+
                   ListTile(
                     onTap: (){
+                      Navigator.of(context).pop();
                       ref.read(authProvider.notifier).userLogOut();
                     },
                     leading: Icon(Icons.exit_to_app),
@@ -47,20 +71,27 @@ class HomePage extends StatelessWidget {
                         itemBuilder: (context, index){
                         return Padding(
                           padding: const EdgeInsets.all(7.0),
-                          child: GridTile(
-                              footer: Container(
-                                padding: EdgeInsets.all(5),
-                                color: Colors.black45,
-                                height: 50,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(productData.products[index].product_name),
-                                    Text('Rs ${productData.products[index].product_price}')
-                                  ],
+                          child: InkWell(
+                            onTap: (){
+                              Get.to(() => DetailPage(productData.products[index]));
+                            },
+                            child: GridTile(
+                                footer: Container(
+                                  padding: EdgeInsets.all(5),
+                                  color: Colors.black45,
+                                  height: 50,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(productData.products[index].product_name),
+                                      Text('Rs ${productData.products[index].product_price}')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              child: Image.network( productData.products[index].product_image, fit: BoxFit.cover,)),
+                                child: Hero(
+                                    tag: productData.products[index].id,
+                                    child: Image.network( productData.products[index].product_image, fit: BoxFit.cover,))),
+                          ),
                         );
                         }
                     )

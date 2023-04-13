@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 
-final cartProvider = StateNotifierProvider((ref) => CartProvider(ref.watch(boxB)));
+final cartProvider = StateNotifierProvider<CartProvider, List<CartItem>>((ref) => CartProvider(ref.watch(boxB)));
 
 class CartProvider extends StateNotifier<List<CartItem>>{
   CartProvider(super.state);
 
-  void addToCart(Product product){
+  String addToCart(Product product){
      if(state.isEmpty){
        final cart= CartItem(
            product_price: product.product_price,
@@ -21,8 +21,8 @@ class CartProvider extends StateNotifier<List<CartItem>>{
        );
       Hive.box<CartItem>('carts').add(cart);
        state = [cart];
+       return 'added';
      }else{
-
         final current = state.firstWhere((element) => element.product_id == product.id, orElse: (){
           return CartItem(product_price: 0, product_name: 'no-data', product_image: '', quantity: 0, product_id:'0');
         });
@@ -37,8 +37,9 @@ class CartProvider extends StateNotifier<List<CartItem>>{
           );
           Hive.box<CartItem>('carts').add(cart);
           state = [...state, cart];
+          return 'added';
         }else{
-
+          return 'already added';
         }
 
 
@@ -49,17 +50,25 @@ class CartProvider extends StateNotifier<List<CartItem>>{
   void addSingle(CartItem cartItem){
      cartItem.quantity = cartItem.quantity + 1;
      cartItem.save();
+     state = [
+       for(final c in state) if(c.product_id == cartItem.product_id) cartItem else c
+     ];
   }
 
   void removeSingle(CartItem cartItem){
    if(cartItem.quantity > 1){
      cartItem.quantity = cartItem.quantity - 1;
      cartItem.save();
+     state = [
+       for(final c in state) if(c.product_id == cartItem.product_id) cartItem else c
+     ];
    }
   }
 
-  void remove(){
-
+  void remove(CartItem cartItem){
+    cartItem.delete();
+    state.remove(cartItem);
+    state = [...state];
   }
 
 
