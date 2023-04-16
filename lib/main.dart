@@ -13,7 +13,7 @@ import 'models/user.dart';
 
 
 
-final boxA = Provider<User?>((ref) => null);
+final boxA = Provider<User>((ref) => User.empty());
 final boxB = Provider<List<CartItem>>((ref) => []);
 void main() async {
 
@@ -30,7 +30,7 @@ final bx = Hive.box<String?>('user');
   final getBox = bx.get('user');
   runApp(ProviderScope(
     overrides: [
-      boxA.overrideWithValue(getBox == null ? null:  User.fromJson(jsonDecode(getBox))),
+      boxA.overrideWithValue(getBox == null ?User.empty():  User.fromJson(jsonDecode(getBox))),
       boxB.overrideWithValue(cartBox.values.toList())
     ],
       child: const Home()

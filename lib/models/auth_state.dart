@@ -8,7 +8,7 @@ class AuthState{
     final bool isError;
     final  bool isSuccess;
     final String errText;
-     User? user;
+    final  User user;
 
 
     AuthState({
@@ -16,7 +16,7 @@ class AuthState{
       required this.errText,
       required this.isSuccess,
       required this.isError,
-      this.user
+       required this.user
 });
 
 
@@ -27,7 +27,6 @@ class AuthState{
        bool? isSuccess,
       String? errText,
       User? user,
-
     }
         ){
       return AuthState(

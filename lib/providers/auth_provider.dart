@@ -4,6 +4,7 @@ import 'package:fireapp/service/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../main.dart';
+import '../models/user.dart';
 
 
 
@@ -55,7 +56,7 @@ class AuthProvider extends StateNotifier<AuthState>{
   void userLogOut() async {
     final bx = Hive.box<String?>('user');
     bx.clear();
-    state = state.copyWith(user: null);
+    state = state.copyWith(user: User.empty());
   }
 
 

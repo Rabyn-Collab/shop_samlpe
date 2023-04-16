@@ -2,7 +2,7 @@ import '../api.dart';
 
 class Review {
   final String name;
-  final String rating;
+  final int rating;
   final String comment;
   Review({required this.rating, required this.name, required this.comment});
 

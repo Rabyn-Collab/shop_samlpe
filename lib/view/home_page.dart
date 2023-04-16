@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../providers/auth_provider.dart';
 import '../providers/crud_provider.dart';
 import 'cart_page.dart';
+import 'crud/crud_page.dart';
 import 'detail_page.dart';
 
 
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
       builder: (context, ref, child) {
         final productData = ref.watch(crudProvider);
         final user = ref.watch(authProvider);
-        print(user.user);
+
         return Scaffold(
             appBar: AppBar(
           title: Text('Sample Shop'),
@@ -35,13 +36,13 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(user.user!.fullname),
-                      Text(user.user!.email)
+                      Text(user.user.fullname),
+                      Text(user.user.email)
                     ],
                   )),
-                  if(user.user!.isAdmin) ListTile(
+                  if(user.user.isAdmin) ListTile(
                     onTap: (){
-
+                      Get.to(() => CrudPage());
                     },
                     leading: Icon(Icons.settings),
                     title: Text('Crud'),

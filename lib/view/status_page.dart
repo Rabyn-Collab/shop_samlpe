@@ -12,7 +12,7 @@ class StatusPage extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final data = ref.watch(authProvider);
     return Scaffold(
-        body: data.user == null ? LoginPage(): HomePage()
+        body: data.user.token == 'no-data' ? LoginPage(): HomePage()
     );
   }
 }

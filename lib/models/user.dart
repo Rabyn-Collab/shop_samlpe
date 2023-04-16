@@ -29,4 +29,16 @@ class User{
    );
   }
 
+
+ factory User.empty(){
+  return User(
+     email: '',
+   fullname: '',
+   id: '',
+   token: 'no-data',
+   isAdmin: false
+  );
+ }
+
+
 }
