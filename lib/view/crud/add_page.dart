@@ -28,6 +28,7 @@ class AddPage extends ConsumerWidget {
       if(next.isError){
         SnackShow.showError(next.errText);
       }else if (next.isSuccess){
+        ref.invalidate(crudProvider);
         Get.back();
         SnackShow.showSuccess('success');
       }

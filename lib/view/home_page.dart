@@ -1,3 +1,4 @@
+import 'package:fireapp/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -42,6 +43,7 @@ class HomePage extends StatelessWidget {
                   )),
                   if(user.user.isAdmin) ListTile(
                     onTap: (){
+                      Navigator.of(context).pop();
                       Get.to(() => CrudPage());
                     },
                     leading: Icon(Icons.settings),
@@ -91,7 +93,7 @@ class HomePage extends StatelessWidget {
                                 ),
                                 child: Hero(
                                     tag: productData.products[index].id,
-                                    child: Image.network( productData.products[index].product_image, fit: BoxFit.cover,))),
+                                    child: Image.network( '${Api.baseUrl}${productData.products[index].product_image}', fit: BoxFit.cover,))),
                           ),
                         );
                         }

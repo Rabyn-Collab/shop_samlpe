@@ -52,6 +52,32 @@ class CrudProvider extends StateNotifier<CommonState>{
   }
 
 
+  Future<void> updateProduct({
+    required String product_name,
+    required String product_detail,
+    required int product_price,
+    required String old_image,
+    XFile? image,
+    required String brand,
+    required String category,
+    required int countInStock,
+    required String token,
+    required String id
+  }) async{
+
+    state = state.copyWith(isSuccess: false, isError: false, errText: '',isLoad: true);
+    final response = await service.updateProduct(
+        product_name: product_name,
+        product_detail: product_detail, product_price: product_price,
+        old_image: old_image, brand: brand, category: category, countInStock: countInStock,
+        token: token, id: id,image: image);
+    response.fold((l) {
+      state = state.copyWith(isSuccess: false, isError: true, errText: l, isLoad: false);
+    }, (r) {
+      state = state.copyWith(isSuccess: true, isError: false, errText: '',isLoad: false, );
+    });
+
+  }
 
 
 

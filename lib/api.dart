@@ -2,7 +2,7 @@
 
 
 class Api{
- static const  baseUrl = 'https://shop-backened.onrender.com';
+ static const  baseUrl = 'https://shop-backened-stsp.onrender.com';
  static const userLogin = '$baseUrl/api/userLogin';
  static const userSignUp = '$baseUrl/api/userSignUp';
  static const productUpdate = '$baseUrl/api/product_update';

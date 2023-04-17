@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
+import '../../api.dart';
 import '../../providers/crud_provider.dart';
 
 
@@ -33,7 +34,7 @@ class CrudPage extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   child: ListTile(
-                    leading: Image.network( productData.products[index].product_image, fit: BoxFit.cover,),
+                    leading: Image.network('${Api.baseUrl}${productData.products[index].product_image}', fit: BoxFit.cover,),
                       title:     Text(productData.products[index].product_name),
                     trailing: Container(
                       width: 100,
@@ -42,6 +43,7 @@ class CrudPage extends ConsumerWidget {
                        IconButton(
                            onPressed: (){
 
+                             Get.to(() => UpdatePage( productData.products[index]));
                            }, icon: Icon(Icons.edit)),
                        IconButton(
                            onPressed: (){

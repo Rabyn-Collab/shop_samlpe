@@ -63,11 +63,58 @@ class CrudService {
     }
   }
 
-  Future<Either<String, bool>> updateProduct() async{
+  Future<Either<String, bool>> updateProduct({
+    required String product_name,
+    required String product_detail,
+    required int product_price,
+    required String old_image,
+    XFile? image,
+    required String brand,
+    required String category,
+    required int countInStock,
+    required String token,
+    required String id
+   }) async{
     try {
-      final response = await dio.get(Api.baseUrl);
-      final data = (response.data as List).map((e) => Product.fromJson(e)).toList();
-      return Right(true);
+   if(image == null){
+   final response = await dio.patch('${Api.productUpdate}/$id', data: {
+     'product_name': product_name,
+     'product_detail': product_detail,
+     'product_price': product_price,
+     'brand': brand,
+     'category': category,
+     'countInStock': countInStock,
+     'product_image': old_image
+   }, options: Options(
+       headers: {
+         'Authorization': token
+       }
+   ));
+   }else{
+     final formData = FormData.fromMap({
+       'product_name': product_name,
+       'product_detail': product_detail,
+       'product_price': product_price,
+       'brand': brand,
+       'category': category,
+       'countInStock': countInStock,
+       'product_image': await MultipartFile.fromFile(image.path, filename: image.name),
+     });
+
+     final response = await dio.patch('${Api.productUpdate}/$id', data: formData,
+         queryParameters: {
+       'imagePath': old_image
+         },
+         options: Options(
+             headers: {
+               'Authorization': token
+             }
+         )
+     );
+   }
+
+   return Right(true);
+
 
     }on DioError catch (err){
       print(err.response);
