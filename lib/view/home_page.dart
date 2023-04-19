@@ -49,6 +49,14 @@ class HomePage extends StatelessWidget {
                     leading: Icon(Icons.settings),
                     title: Text('Crud'),
                   ),
+                  ListTile(
+                    onTap: (){
+                      Navigator.of(context).pop();
+                      ref.read(authProvider.notifier).userLogOut();
+                    },
+                    leading: Icon(Icons.history),
+                    title: Text('Order History'),
+                  ),
 
                   ListTile(
                     onTap: (){

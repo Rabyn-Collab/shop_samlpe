@@ -1,3 +1,4 @@
+import 'package:fireapp/api.dart';
 import 'package:fireapp/commons_widgets/snack_shows.dart';
 import 'package:fireapp/models/product.dart';
 import 'package:fireapp/providers/cart_provider.dart';
@@ -82,7 +83,7 @@ DetailPage(this.product);
                              borderRadius: BorderRadius.circular(10), 
                              child: Hero(
                                  tag: product.id,
-                                 child: Image.network(product.product_image)))),
+                                 child: Image.network('${Api.baseUrl}${product.product_image}')))),
                    ],
                  ),
                ),

@@ -2,6 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import '../models/cart_item.dart';
 import '../models/common_state.dart';
 import '../service/crud_service.dart';
 
@@ -79,6 +80,20 @@ class CrudProvider extends StateNotifier<CommonState>{
 
   }
 
+
+  Future<void> orderCreate({
+    required List<CartItem> orderItems,
+    required int totalPrice,
+    required String token,
+  }) async{
+    state = state.copyWith(isSuccess: false, isError: false, errText: '',isLoad: true);
+    final response = await service.orderCreate(orderItems: orderItems, totalPrice: totalPrice, token: token);
+    response.fold((l) {
+      state = state.copyWith(isSuccess: false, isError: true, errText: l, isLoad: false);
+    }, (r) {
+      state = state.copyWith(isSuccess: true, isError: false, errText: '',isLoad: false, );
+    });
+  }
 
 
   }

@@ -38,6 +38,37 @@ final dio = Dio();
      }
   }
 
+Future<Either<String, User>> userUpdate({
+  required String address,
+  required String city,
+  required String token
+}) async{
+
+  try {
+
+    final response = await dio.patch(Api.userUpdate, data: {
+      'shippingAddress': {
+    'address': address,
+    'city': city,
+    'isEmpty': false
+      },
+    },options: Options(
+        headers: {
+          'Authorization': token
+        }
+    ));
+    final bx = Hive.box<String?>('user');
+    bx.put('user', jsonEncode(response.data['data']));
+    return Right(User.fromJson(response.data['data']));
+
+  }on DioError catch (err){
+    print(err.response);
+    return Left(err.toString());
+  }on HiveError catch (err){
+    return Left(err.toString());
+  }
+}
+
 
 Future<Either<String, bool>> userSignUp({
   required String email,

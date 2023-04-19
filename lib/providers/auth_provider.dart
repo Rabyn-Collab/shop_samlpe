@@ -9,7 +9,7 @@ import '../models/user.dart';
 
 
 
-final authProvider = StateNotifierProvider<AuthProvider, AuthState>((ref) => AuthProvider(
+final authProvider = StateNotifierProvider.autoDispose<AuthProvider, AuthState>((ref) => AuthProvider(
     AuthState(user: ref.watch(boxA), isLoad: false, errText: '', isSuccess: false, isError: false),
     ref.watch(authService)
 ));
@@ -32,8 +32,22 @@ class AuthProvider extends StateNotifier<AuthState>{
     });
   }
 
+  Future<void> userUpdate({
+    required String address,
+    required String city,
+    required String token
+  }) async {
+    state = state.copyWith(isSuccess: false, isError: false, errText: '',isLoad: true, user: null);
+    final response = await service.userUpdate(address: address, city: city, token: token);
+    response.fold((l) {
+      state = state.copyWith(isSuccess: false, isError: true, errText: l, isLoad: false, user: null);
+    }, (r) {
+      state = state.copyWith(isSuccess: true, isError: false, errText: '',isLoad: false, user: r);
+    });
+  }
 
-  Future<void> userSignUp({
+
+    Future<void> userSignUp({
     required String email,
     required String password,
     required String fullname,

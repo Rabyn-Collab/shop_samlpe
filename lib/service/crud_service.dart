@@ -1,16 +1,37 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:fireapp/api.dart';
+import 'package:fireapp/models/cart_item.dart';
 import 'package:fireapp/models/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../models/order.dart';
 
 
 final crudService = Provider((ref) => CrudService());
 
 class CrudService {
 
-  final dio = Dio();
+static  final dio = Dio();
+
+static  Future<Either<String, List<Orders>>> getOrder({
+    required String token,
+  }) async{
+    try {
+      final response = await dio.get(Api.orderHistory, options: Options(
+          headers: {
+            'Authorization': token
+          }
+      ));
+      final data = (response.data as List).map((e) => Orders.fromJson(e)).toList();
+      return Right(data);
+
+    }on DioError catch (err){
+      print(err.response);
+      return Left(err.toString());
+    }
+  }
 
 
 
@@ -123,9 +144,13 @@ class CrudService {
   }
 
 
-  Future<Either<String, bool>> removeProduct() async{
+  Future<Either<String, bool>> removeProduct({
+    required String token,
+    required String id,
+    required String old_image,
+}) async{
     try {
-      final response = await dio.get(Api.baseUrl);
+      final response = await dio.get(Api.productRemove, );
       final data = (response.data as List).map((e) => Product.fromJson(e)).toList();
       return Right(true);
 
@@ -134,6 +159,64 @@ class CrudService {
       return Left(err.toString());
     }
   }
+
+
+
+
+
+
+  Future<Either<String, bool>> orderCreate({
+   required List<CartItem> orderItems,
+   required int totalPrice,
+    required String token,
+  }) async{
+    try {
+    final  response = await dio.post(Api.createOrder, data: {
+      'orderItems': orderItems.map((e) => e.toJson()).toList(),
+      'shippingAddress': {
+        'address': "swargadwari nagar",
+        'city': "lalitpur nepal",
+        'isEmpty': false
+      },
+      'totalPrice': totalPrice
+    }, options: Options(
+        headers: {
+          'Authorization': token
+        }
+    ));
+      return Right(true);
+
+    }on DioError catch (err){
+      print(err.response);
+      return Left(err.toString());
+    }
+  }
+
+  // Future<Either<String, bool>> getOrder({
+  //   required String token,
+  // }) async{
+  //   try {
+  //     final  response = await dio.post(Api.createOrder, data: {
+  //       'orderItems': orderItems.map((e) => e.toJson()).toList(),
+  //       'shippingAddress': {
+  //         'address': "swargadwari nagar",
+  //         'city': "lalitpur nepal",
+  //         'isEmpty': false
+  //       },
+  //       'totalPrice': totalPrice
+  //     }, options: Options(
+  //         headers: {
+  //           'Authorization': token
+  //         }
+  //     ));
+  //     return Right(true);
+  //
+  //   }on DioError catch (err){
+  //     print(err.response);
+  //     return Left(err.toString());
+  //   }
+  // }
+
 
 
 }

@@ -1,22 +1,38 @@
+import 'package:fireapp/export_widgets.dart';
 import 'package:fireapp/providers/cart_provider.dart';
+import 'package:fireapp/view/home_page.dart';
+import 'package:fireapp/view/ship_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
+import '../api.dart';
 import '../constants/sizes.dart';
+import '../providers/crud_provider.dart';
 
 
 
-class CartPage extends StatelessWidget {
+class CartPage extends ConsumerWidget {
   const CartPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    ref.listen(crudProvider, (previous, next) {
+      if(next.isError){
+        SnackShow.showError(next.errText);
+      }else if (next.isSuccess){
+        ref.invalidate(crudProvider);
+        Get.offAll(()=> HomePage());
+        SnackShow.showSuccess('success');
+      }
+    });
+    final crud = ref.watch(crudProvider);
+    final carData = ref.watch(cartProvider);
+    final auth = ref.watch(authProvider);
+    final total =ref.watch(cartProvider.notifier).getTotal;
+
     return Scaffold(
-        body: Consumer(
-            builder: (context, ref, child) {
-              final carData = ref.watch(cartProvider);
-              final total =ref.watch(cartProvider.notifier).getTotal;
-              return SafeArea(
+        body:  SafeArea(
                   child: carData.isEmpty ? Center(child: Text('Add Some Product To cart')): Column(
                     children: [
                     Expanded(
@@ -26,7 +42,7 @@ class CartPage extends StatelessWidget {
                             final cart = carData[index];
                               return Row(
                                 children: [
-                                  Expanded(child: Image.network(cart.product_image)),
+                                  Expanded(child: Image.network('${Api.baseUrl}${cart.product_image}')),
                                   Expanded( 
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -76,16 +92,27 @@ class CartPage extends StatelessWidget {
                               ],
                             ),
                             gapH12,
-                            ElevatedButton(onPressed: (){}, child: Text('Check Out'))
+                            ElevatedButton( onPressed: crud.isLoad ? null : (){
+                              if(auth.user.shipping.isEmpty){
+                                 Get.to(() => ShipPage(), transition:  Transition.leftToRight);
+                              }else{
+                                ref.read(crudProvider.notifier).orderCreate(
+                                    orderItems: carData,
+                                    totalPrice: total,
+                                    token: auth.user.token
+                                );
+                              }
+
+                            }, child : crud.isLoad ? Center(child: CircularProgressIndicator()): Text('Check Out'))
 
                           ],
                         ),
                       )
                     ],
                   )
-              );
-            }
-             )
+              )
+
+
     );
   }
 }
