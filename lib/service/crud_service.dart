@@ -10,12 +10,12 @@ import '../models/order.dart';
 
 
 final crudService = Provider((ref) => CrudService());
-
+final orderFetch = FutureProvider.family.autoDispose((ref, String token) => CrudService.getOrder(token: token));
 class CrudService {
 
 static  final dio = Dio();
 
-static  Future<Either<String, List<Orders>>> getOrder({
+static  Future<List<Orders>> getOrder({
     required String token,
   }) async{
     try {
@@ -24,12 +24,12 @@ static  Future<Either<String, List<Orders>>> getOrder({
             'Authorization': token
           }
       ));
+      print(response.data);
       final data = (response.data as List).map((e) => Orders.fromJson(e)).toList();
-      return Right(data);
+      return data;
 
     }on DioError catch (err){
-      print(err.response);
-      return Left(err.toString());
+      throw err.toString();
     }
   }
 

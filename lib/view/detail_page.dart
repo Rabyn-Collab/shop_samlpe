@@ -1,5 +1,6 @@
 import 'package:fireapp/api.dart';
 import 'package:fireapp/commons_widgets/snack_shows.dart';
+import 'package:fireapp/export_widgets.dart';
 import 'package:fireapp/models/product.dart';
 import 'package:fireapp/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,9 @@ DetailPage(this.product);
                         )),
                         Consumer(
                           builder: (context, ref, child) {
+                            final auth = ref.watch(authProvider);
                             return ElevatedButton(
-                                onPressed: () {
+                                onPressed: auth.user.isAdmin ? null: () {
                                   final response = ref.read(cartProvider.notifier).addToCart(product);
                                   if(response == 'added'){
                                     SnackShow.showBar(context, true);

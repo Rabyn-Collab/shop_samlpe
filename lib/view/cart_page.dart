@@ -21,6 +21,7 @@ class CartPage extends ConsumerWidget {
       if(next.isError){
         SnackShow.showError(next.errText);
       }else if (next.isSuccess){
+        ref.read(cartProvider.notifier).clear();
         ref.invalidate(crudProvider);
         Get.offAll(()=> HomePage());
         SnackShow.showSuccess('success');

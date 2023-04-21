@@ -1,4 +1,5 @@
 import 'package:fireapp/api.dart';
+import 'package:fireapp/view/histry_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -49,10 +50,10 @@ class HomePage extends StatelessWidget {
                     leading: Icon(Icons.settings),
                     title: Text('Crud'),
                   ),
-                  ListTile(
+                  if(!user.user.isAdmin)  ListTile(
                     onTap: (){
                       Navigator.of(context).pop();
-                      ref.read(authProvider.notifier).userLogOut();
+                      Get.to(() => HistoryPage());
                     },
                     leading: Icon(Icons.history),
                     title: Text('Order History'),
