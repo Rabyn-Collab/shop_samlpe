@@ -72,7 +72,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 gapH16,
                 TextFormField(
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.text,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(20)
                   ],

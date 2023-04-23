@@ -3,6 +3,7 @@ import 'package:fireapp/constants/sizes.dart';
 import 'package:fireapp/export_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../service/crud_service.dart';
 
@@ -25,8 +26,17 @@ class HistoryPage extends StatelessWidget {
                         child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (context, index){
+
+                              DateTime now = DateTime.parse(data[index].dateTime);
+                              String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+
                               return  ExpansionTile(
-                                  title: Text('Total Rs.${data[index].totalPrice}'),
+                                  title: Row(
+                                    children: [
+                                      Text('Total Rs.${data[index].totalPrice}'),
+
+                                    ],
+                                  ),
                                 children: data[index].carts.map((e){
                                   return Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
