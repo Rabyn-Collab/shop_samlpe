@@ -50,6 +50,15 @@ class HomePage extends StatelessWidget {
                     leading: Icon(Icons.settings),
                     title: Text('Crud'),
                   ),
+                  if(user.user.isAdmin)  ListTile(
+                    onTap: (){
+                      Navigator.of(context).pop();
+                      Get.to(() => HistoryPage());
+                    },
+                    leading: Icon(Icons.person),
+                    title: Text('All Users'),
+                  ),
+
                   if(!user.user.isAdmin)  ListTile(
                     onTap: (){
                       Navigator.of(context).pop();

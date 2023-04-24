@@ -29,11 +29,12 @@ class HistoryPage extends StatelessWidget {
 
                               DateTime now = DateTime.parse(data[index].dateTime);
                               String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
-
                               return  ExpansionTile(
                                   title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('Total Rs.${data[index].totalPrice}'),
+                                      Text(formattedDate),
 
                                     ],
                                   ),

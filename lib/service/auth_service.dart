@@ -11,9 +11,34 @@ import '../models/user.dart';
 
 final authService = Provider((ref) => AuthService());
 
+final users = FutureProvider.family((ref, String token) => AuthService().getAllUser(token: token));
 class AuthService {
 
 final dio = Dio();
+
+Future<Either<String, List<User>>> getAllUser({
+  required String token
+}) async{
+
+  try {
+
+    final response = await dio.get(Api.getAllUsers, options: Options(
+        headers: {
+          'Authorization': token
+        }
+    ));
+
+    return Right((response.data as List).map((e) {
+      return User.fromJson(e);
+    }).toList());
+
+  }on DioError catch (err){
+    print(err.response);
+    return Left(err.toString());
+  }on HiveError catch (err){
+    return Left(err.toString());
+  }
+}
 
    Future<Either<String, User>> userLogin({
     required String email,

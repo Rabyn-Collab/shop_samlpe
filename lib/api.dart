@@ -11,5 +11,6 @@ class Api{
  static const createOrder = '$baseUrl/api/order_create';
  static const orderHistory = '$baseUrl/api/user/order';
  static const userUpdate = '$baseUrl/api/updateUser';
+ static const getAllUsers = '$baseUrl/api/users';
 
 }
