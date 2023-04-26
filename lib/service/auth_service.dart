@@ -16,27 +16,20 @@ class AuthService {
 
 final dio = Dio();
 
-Future<Either<String, List<User>>> getAllUser({
+Future<List<User2>> getAllUser({
   required String token
-}) async{
-
+}) async {
   try {
-
     final response = await dio.get(Api.getAllUsers, options: Options(
         headers: {
           'Authorization': token
         }
     ));
-
-    return Right((response.data as List).map((e) {
-      return User.fromJson(e);
-    }).toList());
-
-  }on DioError catch (err){
+    final data = response.data as List;
+    return data.map((e) => User2.fromJson(e)).toList();
+  } on DioError catch (err) {
     print(err.response);
-    return Left(err.toString());
-  }on HiveError catch (err){
-    return Left(err.toString());
+    return throw err.toString();
   }
 }
 

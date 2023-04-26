@@ -11,13 +11,19 @@ class AllUser extends ConsumerWidget {
     final auth = ref.watch(authProvider);
     final userData = ref.watch(users(auth.user.token));
     return Scaffold(
-        body:ListView.builder(
-          itemCount: userData.length,
-            itemBuilder: (context, index){
-            return ListTile(
-              title: Text[index].,
-            );
-            })
+        body: SafeArea(
+          child: userData.when(data: (data){
+          return  ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index){
+                  return ListTile(
+                   leading: Icon(Icons.person),
+                   title: Text(data[index].fullname),
+                   trailing: Text(data[index].isAdmin ? 'Admin': 'User'),
+                  );
+                });
+          }, error: (err, stack) => Text('$err'), loading: () => CircularProgressIndicator()),
+        )
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:fireapp/api.dart';
+import 'package:fireapp/view/all_users.dart';
 import 'package:fireapp/view/histry_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +54,7 @@ class HomePage extends StatelessWidget {
                   if(user.user.isAdmin)  ListTile(
                     onTap: (){
                       Navigator.of(context).pop();
-                      Get.to(() => HistoryPage());
+                      Get.to(() => AllUser());
                     },
                     leading: Icon(Icons.person),
                     title: Text('All Users'),

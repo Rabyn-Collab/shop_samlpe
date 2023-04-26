@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'location/location_check.dart';
 import 'models/cart_item.dart';
 import 'models/user.dart';
 
@@ -47,7 +48,8 @@ class Home extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-        home: StatusPage()
+        home: LocationCheck()
+        // StatusPage()
     );
   }
 }

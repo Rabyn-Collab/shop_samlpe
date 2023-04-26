@@ -65,3 +65,29 @@ class User{
 
 
 }
+
+
+class User2{
+ final String id;
+final String fullname;
+final String email;
+final bool isAdmin;
+
+User2({
+  required this.isAdmin,
+ required this.fullname,
+ required this.id,
+ required this.email
+});
+
+ factory User2.fromJson(Map<String, dynamic> json){
+  return User2(
+      id: json['_id'],
+      email: json['email'],
+      fullname: json['fullname'],
+      isAdmin: json['isAdmin'],
+  );
+ }
+
+
+}
